@@ -61,5 +61,4 @@ public class SwingGamePanel extends JPanel {
             g.drawString(restartMessage, (getWidth() - restartWidth) / 2, getHeight() / 2 + 40);
         }
     }
-
 }
