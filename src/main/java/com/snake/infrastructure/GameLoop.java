@@ -14,11 +14,11 @@ public class GameLoop {
     public GameLoop(GameUseCase gameUseCase, SwingGamePanel gamePanel) {
         this.gameUseCase = gameUseCase;
         this.gamePanel = gamePanel;
-        createTimer();
+        createTimer(gameUseCase.getCurrentDelay());
     }
 
-    private void createTimer() {
-        timer = new Timer(gameUseCase.getCurrentDelay(), e -> {
+    private void createTimer(int initialDelay) {
+        timer = new Timer(initialDelay, e -> {
             if (!gameUseCase.getGameState().isGameOver()) {
                 gameUseCase.moveSnake();
                 gamePanel.repaint();
@@ -26,6 +26,11 @@ public class GameLoop {
                 timer.stop();
             }
         });
+    }
+
+    public void updateTimerDelay(int newDelay) {
+        timer.setDelay(newDelay);
+        timer.restart();
     }
 
     public void start() {

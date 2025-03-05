@@ -1,6 +1,7 @@
 package com.snake.application;
 
 import com.snake.core.domain.*;
+import com.snake.infrastructure.GameLoop;
 
 import java.util.List;
 import java.util.Random;
@@ -11,14 +12,19 @@ public class GameService implements GameUseCase {
     private final int gridHeight;
     private final Random random = new Random();
     private int applesEaten;
-    private final int initialDelay = 150;
+    private final int initialDelay = 400;
     private int currentDelay;
+    private GameLoop gameLoop;
 
     public GameService(int gridWidth, int gridHeight, GameMode gameMode) {
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
         this.currentDelay = initialDelay;
         reset(gameMode);
+    }
+
+    public void setGameLoop(GameLoop gameLoop) {
+        this.gameLoop = gameLoop;
     }
 
     @Override
@@ -62,14 +68,29 @@ public class GameService implements GameUseCase {
 
         // Verifica se a cobra comeu a comida
         boolean grow = newHead.equals(gameState.getFood().getPosition());
-        snake.move(newHead, grow); // Passa a nova posição ajustada
+        snake.move(newHead, grow);
 
         if (grow) {
             gameState.incrementScore();
             applesEaten++;
             generateNewFood();
-            updateSpeed();
+            updateSpeed(); // Atualiza a velocidade conforme as maçãs comidas
         }
+    }
+
+    private void updateSpeed() {
+        if (applesEaten % 2 == 0) {
+            int speedIncrease = (gameState.getGameMode() == GameMode.EASY) ? 15 : 30;
+            currentDelay = Math.max(50, currentDelay - speedIncrease);
+
+            if (gameLoop != null) {
+                gameLoop.updateTimerDelay(currentDelay); // Passa o novo delay
+            }
+        }
+    }
+    @Override
+    public int getCurrentSpeed() {
+        return (int) (1000.0 / currentDelay); // Converte delay em "velocidade" (unidades por segundo)
     }
 
     private Position wrapAround(Position position) {
@@ -110,18 +131,6 @@ public class GameService implements GameUseCase {
         return position.x() < 0 || position.x() >= gridWidth ||
                 position.y() < 0 || position.y() >= gridHeight;
     }
-
-    private void updateSpeed() {
-        if (applesEaten % 2 == 0) { // A cada 2 maçãs comidas
-            int speedIncrease = (gameState.getGameMode() == GameMode.EASY) ? 1 : 2;
-            currentDelay = Math.max(50, currentDelay - (10 * speedIncrease)); // Aumenta a velocidade
-        }
-    }
-    @Override
-    public int getCurrentSpeed() {
-        return (int) (1000.0 / currentDelay);
-    }
-
 
     @Override
     public GameState getGameState() {

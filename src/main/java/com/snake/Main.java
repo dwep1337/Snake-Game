@@ -47,9 +47,10 @@ public class Main {
         int gridWidth = 20;
         int gridHeight = 15;
 
-        GameUseCase gameService = new GameService(gridWidth, gridHeight, gameMode);
+        GameService gameService = new GameService(gridWidth, gridHeight, gameMode);
         SwingGamePanel gamePanel = new SwingGamePanel(gameService);
         GameLoop gameLoop = new GameLoop(gameService, gamePanel);
+        gameService.setGameLoop(gameLoop); // Vinculação essencial
         SwingGameWindow window = new SwingGameWindow(gameService, gamePanel, gameLoop);
 
         window.setVisible(true);
