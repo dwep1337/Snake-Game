@@ -14,7 +14,7 @@ public class Snake {
         this.direction = Direction.RIGHT;
     }
 
-    public Position calculateNewHeadPosition() {
+    public Position calculateNewHead() {
         Position head = body.getFirst();
         return switch (direction) {
             case UP -> new Position(head.x(), head.y() - 1);
@@ -24,14 +24,12 @@ public class Snake {
         };
     }
 
-    public void move(boolean grow) {
-        Position newHeadPosition = calculateNewHeadPosition();
-        body.addFirst(newHeadPosition);
-
-        if (!grow)
-            body.removeLast();
+    public void move(Position newHead, boolean grow) {
+        body.addFirst(newHead); // Adiciona a nova cabeça
+        if (!grow) {
+            body.removeLast(); // Remove a cauda se não crescer
+        }
     }
-
     public void setDirection(Direction direction) {
         if (!isOppositeDirection(direction)) {
             this.direction = direction;
@@ -45,13 +43,5 @@ public class Snake {
                 || (this.direction == Direction.RIGHT && direction == Direction.LEFT);
     }
 
-    public boolean isHeadCollidingWithBody() {
-        Position head = body.getFirst();
-        return body.stream().skip(1).anyMatch(position -> position.equals(head));
-    }
-
     public List<Position> getBody() { return new ArrayList<>(body); }
-
-    public Direction getDirection() { return direction; }
-
 }

@@ -25,22 +25,22 @@ public class SwingGamePanel extends JPanel {
         super.paintComponent(g);
         GameState state = gameUseCase.getGameState();
 
-        // Draw snake
+        // Desenha a cobra
         g.setColor(Color.GREEN);
         for (Position p : state.getSnake().getBody()) {
             g.fillRect(p.x() * TILE_SIZE, p.y() * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1);
         }
 
-        // Draw food
+        // Desenha a comida
         g.setColor(Color.RED);
         Position foodPos = state.getFood().getPosition();
         g.fillOval(foodPos.x() * TILE_SIZE, foodPos.y() * TILE_SIZE, TILE_SIZE - 1, TILE_SIZE - 1);
 
-        // Draw score
+        // Desenha a pontuação
         g.setColor(Color.WHITE);
         g.drawString("Score: " + state.getScore(), 10, 20);
 
-        // Game over message
+        // Mensagem de Game Over
         if (state.isGameOver()) {
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.BOLD, 30));
@@ -48,13 +48,12 @@ public class SwingGamePanel extends JPanel {
             int textWidth = g.getFontMetrics().stringWidth(message);
             g.drawString(message, (getWidth() - textWidth) / 2, getHeight() / 2);
 
-
-            //restart message
-
+            // Mensagem de reinício
             g.setFont(new Font("Arial", Font.PLAIN, 20));
-            String restartMessage = "Press 'R' to Restart";
+            String restartMessage = "Press 'R' to Restart (Easy) or 'H' to Restart (Hard)";
             int restartWidth = g.getFontMetrics().stringWidth(restartMessage);
             g.drawString(restartMessage, (getWidth() - restartWidth) / 2, getHeight() / 2 + 40);
         }
     }
+
 }

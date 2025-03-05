@@ -2,6 +2,7 @@ package com.snake.application;
 
 import com.snake.core.domain.Direction;
 import com.snake.core.domain.GameState;
+import com.snake.core.domain.GameMode;
 
 public interface GameUseCase {
     void moveSnake();
@@ -10,5 +11,6 @@ public interface GameUseCase {
     GameState getGameState();
     int getGridWidth();
     int getGridHeight();
-    void reset();
+    void reset(GameMode gameMode);
+    int getCurrentDelay();
 }
