@@ -117,6 +117,11 @@ public class GameService implements GameUseCase {
             currentDelay = Math.max(50, currentDelay - (10 * speedIncrease)); // Aumenta a velocidade
         }
     }
+    @Override
+    public int getCurrentSpeed() {
+        return (int) (1000.0 / currentDelay);
+    }
+
 
     @Override
     public GameState getGameState() {

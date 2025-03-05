@@ -13,4 +13,5 @@ public interface GameUseCase {
     int getGridHeight();
     void reset(GameMode gameMode);
     int getCurrentDelay();
+    int getCurrentSpeed();
 }

@@ -40,6 +40,12 @@ public class SwingGamePanel extends JPanel {
         g.setColor(Color.WHITE);
         g.drawString("Score: " + state.getScore(), 10, 20);
 
+        // Desenha o nível e a velocidade
+        String modeText = "Mode: " + state.getGameMode().toString();
+        String speedText = "Speed: " + gameUseCase.getCurrentSpeed() + " units/s";
+        g.drawString(modeText, getWidth() - 150, 20);
+        g.drawString(speedText, getWidth() - 150, 40);
+
         // Mensagem de Game Over
         if (state.isGameOver()) {
             g.setColor(Color.RED);
